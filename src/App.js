@@ -1,5 +1,5 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import { Login, Register } from "./pages";
+import { Login, Register, Balance } from "./pages";
 
 export default function App() {
   return(
@@ -7,6 +7,7 @@ export default function App() {
       <Routes>
         <Route path="/" element={<Login />} />
         <Route path="/register" element={<Register />} />
+        <Route path="/balance" element={<Balance />} />
       </Routes>
     </BrowserRouter>
   );

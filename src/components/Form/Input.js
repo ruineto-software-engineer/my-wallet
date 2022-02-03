@@ -8,14 +8,17 @@ const Input = styled.input`
 
   padding: 10px;
 
-  background: #FFFFFF;
+  background-color: ${(props) => props.stageloading ? "#F2F2F2" : "#FFFFFF"};
+
+  pointer-events: ${(props) => props.stageloading ? "none" : "all"};
+
   border: none;
   border-radius: 5px;
 
   font-size: 20px;
   line-height: 23px;
 
-  color: #000000;
+  color: ${(props) => props.stageloading ? "#AFAFAF" : "#000000"};
 
   &::placeholder{
     color: #000000;

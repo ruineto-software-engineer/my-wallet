@@ -6,7 +6,8 @@ const Hiperlink = styled(Link)`
   font-weight: 700;
   line-height: 18px;
   text-decoration: none;
-  /* pointer-events: ${(props) => props.stageLoading ? "none" : "all"}; */
+
+  pointer-events: ${(props) => props.stageloading ? "none" : "all"};
 
   color: #FFFFFF;
 `;
