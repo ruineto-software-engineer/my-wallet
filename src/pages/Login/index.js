@@ -1,4 +1,4 @@
-import { Fragment, useState } from "react";
+import { Fragment, useState, useEffect } from "react";
 import { useNavigate } from 'react-router-dom';
 import useAuth from "../../hooks/useAuth";
 import requests from "../../services/requests";
@@ -8,11 +8,17 @@ import "react-loader-spinner/dist/loader/css/react-spinner-loader.css";
 import { ThreeDots } from  'react-loader-spinner';
 
 export default function Login() {
-  const { setAuth } = useAuth();
+  const { login } = useAuth();
   const navigate = useNavigate();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [isLoading, setIsloading] = useState(false);
+
+  useEffect(() => {
+    if (localStorage.getItem("auth") !== null) {
+      navigate("/balance");
+    }
+  }, [navigate]);
 
   function handleSubmit(e) {
     e.preventDefault();
@@ -26,7 +32,7 @@ export default function Login() {
       promise.then((response) => {
         setIsloading(false);
 
-        setAuth(response.data);
+        login(response.data);
         navigate("/balance");
       });
     }, 3000);

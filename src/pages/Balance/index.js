@@ -1,4 +1,5 @@
 import { Fragment, useState, useEffect } from "react";
+import { useNavigate } from 'react-router-dom';
 import useAuth from "../../hooks/useAuth";
 import requests from "../../services/requests";
 import Logout from "../../assets/img/logout.svg";
@@ -23,7 +24,8 @@ import {
   ValueBalance } from "../../components/Balance";
 
 export default function Balance() {
-  const { auth } = useAuth();
+  const { auth, logout } = useAuth();
+  const navigate = useNavigate();
   const [movements, setMovements] = useState(null);
   const [isLoading, setIsloading] = useState(false);
 
@@ -84,6 +86,15 @@ export default function Balance() {
     return inputValue;
   }
 
+  function handleLogout() {
+    if(window.confirm("Deseja realmente sair da seção atual?")){
+      logout();
+      navigate("/");
+    }else{
+      return;
+    }
+  }
+
   return(
     <Fragment>
       <Container>
@@ -93,7 +104,7 @@ export default function Balance() {
               {`Olá, ${auth.name}`}
             </Title>
 
-            <button>
+            <button onClick={handleLogout}>
               <img alt="logout.svg" src={Logout}/>
             </button>
           </Header>
