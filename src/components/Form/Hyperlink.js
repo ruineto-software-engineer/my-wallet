@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import { Link } from "react-router-dom";
 
-const Hiperlink = styled(Link)`
+const Hyperlink = styled(Link)`
   font-size: 15px;
   font-weight: 700;
   line-height: 18px;
@@ -12,4 +12,4 @@ const Hiperlink = styled(Link)`
   color: #FFFFFF;
 `;
 
-export default Hiperlink;
+export default Hyperlink;

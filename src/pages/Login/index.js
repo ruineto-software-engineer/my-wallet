@@ -1,12 +1,14 @@
-import axios from "axios";
 import { Fragment, useState } from "react";
 import { useNavigate } from 'react-router-dom';
+import useAuth from "../../hooks/useAuth";
+import requests from "../../services/requests";
 import Logo from "../../assets/img/logo.svg";
 import { Button, Container, Form, Input, Hyperlink } from "../../components/Form";
 import "react-loader-spinner/dist/loader/css/react-spinner-loader.css";
 import { ThreeDots } from  'react-loader-spinner';
 
 export default function Login() {
+  const { setAuth } = useAuth();
   const navigate = useNavigate();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -16,7 +18,7 @@ export default function Login() {
     e.preventDefault();
 
     setIsloading(true);
-    const promise = axios.post('http://localhost:5000/sign-in', {
+    const promise = requests.signIn({
       email,
       password
     });
@@ -24,15 +26,14 @@ export default function Login() {
       promise.then((response) => {
         setIsloading(false);
 
-        console.log("token: ", response.data);
+        setAuth(response.data);
         navigate("/balance");
       });
     }, 3000);
     setTimeout(() => {
-      promise.catch((error) => {
+      promise.catch(() => {
         setIsloading(false);
 
-        console.log(error);
         alert(`Não foi possível efetuar o login. Ocorreu um erro inesperado, tente novamente mais tarde!`);
       });
     }, 3000);

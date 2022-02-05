@@ -1,9 +1,13 @@
 import Login from "./Login";
 import Register from "./Register";
 import Balance from "./Balance";
+import Input from "./Input";
+import Output from "./Output";
 
 export {
   Login,
   Register,
-  Balance
+  Balance,
+  Input,
+  Output
 }

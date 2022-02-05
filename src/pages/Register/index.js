@@ -1,6 +1,6 @@
-import axios from "axios";
 import { Fragment, useState } from "react";
 import { useNavigate } from 'react-router-dom';
+import requests from "../../services/requests";
 import Logo from "../../assets/img/logo.svg";
 import { Button, Container, Form, Input, Hyperlink } from "../../components/Form";
 import "react-loader-spinner/dist/loader/css/react-spinner-loader.css";
@@ -23,14 +23,15 @@ export default function Login() {
     }
 
     setIsloading(true);
-    const promise = axios.post('http://localhost:5000/sign-up', {
+    const promise = requests.signUp({
       name,
       email,
       password
-    });
+    })
     setTimeout(() => {
       promise.then(() => {
         setIsloading(false);
+        
         navigate("/");
       });
     }, 3000);
