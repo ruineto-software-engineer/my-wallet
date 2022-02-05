@@ -19,6 +19,7 @@ import {
   Movement,
   MovementDate,
   MovementDescription,
+  MovementDelete,
   MovementValue, 
   TitleBalance,
   ValueBalance } from "../../components/Balance";
@@ -28,6 +29,7 @@ export default function Balance() {
   const navigate = useNavigate();
   const [movements, setMovements] = useState(null);
   const [isLoading, setIsloading] = useState(false);
+  const [deltedMovement, setDeletedMovement] = useState(null);
 
   useEffect(() =>{
     setIsloading(true);
@@ -46,7 +48,7 @@ export default function Balance() {
         alert("Não foi possível buscar as movimentações. Ocorreu um erro inesperado, tente novamente!");
       });
     }, 2000);
-  }, [auth.token]);
+  }, [auth.token, deltedMovement]);
 
   const movementsReader = movements?.map((movement) => {
     return(
@@ -56,7 +58,10 @@ export default function Balance() {
             <MovementDate>{movement.date}</MovementDate>
             <MovementDescription>{movement.description}</MovementDescription>
           </div>
-          <MovementValue isInput={movement.isInput}>{movement.value}</MovementValue>
+          <div>
+            <MovementValue isInput={movement.isInput}>{movement.value}</MovementValue>
+            <MovementDelete onClick={() => handleDelete(movement._id)}>X</MovementDelete>
+          </div>
         </Movement>
       </Fragment>
     );
@@ -95,6 +100,28 @@ export default function Balance() {
     }
   }
 
+  function handleDelete(idMovement) {
+    if(window.confirm("Deseja realmente deletar esta movimentação?")){
+      setIsloading(true);
+      const promise = requests.deleteMovement(idMovement);
+      setTimeout(() => {
+        promise.then(() => {
+          setIsloading(false);
+          setDeletedMovement(idMovement);
+        });
+      }, 3000);
+      setTimeout(() => {
+        promise.catch(() => {
+          setIsloading(false);
+  
+          alert(`Não foi possível deletar a movimentação. Ocorreu um erro inesperado, tente novamente mais tarde!`);
+        });
+      }, 3000);
+    }else{
+      return;
+    }
+  }
+
   return(
     <Fragment>
       <Container>
@@ -111,7 +138,7 @@ export default function Balance() {
 
           <Movements stageMovements={movements} stageisLoading={isLoading}>
             {
-              movements === null ?
+              (movements === null) || (isLoading === true) ?
                 <TailSpin color="#9156BE" height={80} width={80} />
               :
                 movements.length === 0 ?
@@ -128,12 +155,13 @@ export default function Balance() {
             {
               movements !== null &&
                 movements.length !== 0 &&
-                  <footer>
-                    <TitleBalance>SALDO</TitleBalance>
-                    <ValueBalance balanceWalletResult={balanceWalletResult}>
-                      {handleCurrency(balanceResult?.toString())}
-                    </ValueBalance>
-                  </footer>
+                  isLoading === false &&
+                    <footer>
+                      <TitleBalance>SALDO</TitleBalance>
+                      <ValueBalance balanceWalletResult={balanceWalletResult}>
+                        {handleCurrency(balanceResult?.toString())}
+                      </ValueBalance>
+                    </footer>
             }
           </Movements>
 

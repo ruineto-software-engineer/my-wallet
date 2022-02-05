@@ -10,6 +10,7 @@ import Movement from "./Movement";
 import MovementDate from "./MovementDate";
 import MovementDescription from "./MovementDescription";
 import MovementValue from "./MovementValue";
+import MovementDelete from "./MovementDelete";
 import TitleBalance from "./TitleBalance";
 import ValueBalance from "./ValueBalance";
 
@@ -26,6 +27,7 @@ export {
   MovementDate,
   MovementDescription,
   MovementValue,
+  MovementDelete,
   TitleBalance,
   ValueBalance
 }

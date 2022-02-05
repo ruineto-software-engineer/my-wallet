@@ -39,12 +39,19 @@ function postOutput(body, token) {
   return promise;
 }
 
+function deleteMovement(idMovement) {
+  const promise = axios.delete(`${BASE_URL}/balance/${idMovement}`);
+
+  return promise;
+}
+
 const requests = {
   signIn,
   signUp,
   getBalance,
   postInput,
-  postOutput
+  postOutput,
+  deleteMovement
 }
 
 export default requests;
