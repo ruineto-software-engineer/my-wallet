@@ -1,5 +1,5 @@
-import { Fragment, useState } from "react";
-import { useNavigate } from 'react-router-dom';
+import { Fragment, useEffect, useState } from "react";
+import { useNavigate, useParams } from 'react-router-dom';
 import useAuth from "../../hooks/useAuth";
 import requests from "../../services/requests";
 import dayjs from 'dayjs';
@@ -8,36 +8,47 @@ import { Button, Form, Input as InputForm } from "../../components/Form";
 import "react-loader-spinner/dist/loader/css/react-spinner-loader.css";
 import { ThreeDots } from  'react-loader-spinner';
 
-export default function Input() {
+export default function Update() {
+  const { idMovement } = useParams();
   const { auth } = useAuth();
   const navigate = useNavigate();
+  const [movement, setMovement] = useState(null);
   const [value, setValue] = useState('');
   const [description, setDescription] = useState('');
   const [isLoading, setIsloading] = useState(false);
 
+  useEffect(() => {
+    const promise = requests.getMovement(idMovement, auth.token);
+    promise.then((response) => {
+      setMovement(response.data);
+      setValue(response.data.value);
+      setDescription(response.data.description);
+    });
+  }, [idMovement, auth.token]);
+
   function handleSubmit(e) {
     e.preventDefault();
 
-    let inputData;
+    let formData;
     if(value[0] === ","){
       let secondValue = "0" + value;
-      inputData = {
+      formData = {
         value: secondValue,
         description,
         date: dayjs().format('DD/MM'),
-        isInput: true
+        isInput: movement.isInput
       }
     }else{
-      inputData = {
+      formData = {
         value,
         description,
         date: dayjs().format('DD/MM'),
-        isInput: true
+        isInput: movement.isInput
       }
     }
 
     setIsloading(true);
-    const promise = requests.postInput(inputData, auth.token);
+    const promise = requests.putMovement(formData, idMovement, auth.token);
     setTimeout(() => {
       promise.then(() => {
         setIsloading(false);
@@ -49,7 +60,7 @@ export default function Input() {
       promise.catch(() => {
         setIsloading(false);
 
-        alert(`Não foi possível efetuar o cadastro da entrada. Ocorreu um erro inesperado, tente novamente mais tarde!`);
+        alert(`Não foi possível atualizar os dados da movimentação. Ocorreu um erro inesperado, tente novamente mais tarde!`);
       });
     }, 2000);
   }
@@ -74,13 +85,20 @@ export default function Input() {
     setValue(inputValue);
   }
 
+  if(movement === null){
+    return "";
+  }
+
   return(
     <Fragment>
       <Container>
         <Content>
           <Header>
             <Title>
-              Nova entrada
+              {
+                movement.isInput ? "Editar entrada"
+                : "Editar saída"
+              }
             </Title>
           </Header>
 
@@ -107,7 +125,8 @@ export default function Input() {
               {isLoading ?
                 <ThreeDots color="#FFFFFF" height={50} width={50} />
               :
-                "Salvar entrada"
+                movement.isInput ? "Atualizar entrada"
+                : "Atualizar saída"
               }
             </Button>
           </Form>

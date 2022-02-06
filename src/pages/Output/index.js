@@ -25,14 +25,14 @@ export default function Output() {
         value: secondValue,
         description,
         date: dayjs().format('DD/MM'),
-        isInput: false,
+        isInput: false
       }
     }else{
       outputData = {
         value,
         description,
         date: dayjs().format('DD/MM'),
-        isInput: false,
+        isInput: false
       }
     }
 

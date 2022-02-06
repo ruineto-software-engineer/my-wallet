@@ -39,8 +39,23 @@ function postOutput(body, token) {
   return promise;
 }
 
-function deleteMovement(idMovement) {
-  const promise = axios.delete(`${BASE_URL}/balance/${idMovement}`);
+function deleteMovement(idMovement, token) {
+  const config = createConfig(token);
+  const promise = axios.delete(`${BASE_URL}/balance/${idMovement}`, config);
+
+  return promise;
+}
+
+function putMovement(body, idMovement, token) {
+  const config = createConfig(token);
+  const promise = axios.put(`${BASE_URL}/balance/${idMovement}`, body, config);
+
+  return promise;
+}
+
+function getMovement(idMovement, token) {
+  const config = createConfig(token);
+  const promise = axios.get(`${BASE_URL}/update/${idMovement}`, config);
 
   return promise;
 }
@@ -51,7 +66,9 @@ const requests = {
   getBalance,
   postInput,
   postOutput,
-  deleteMovement
+  deleteMovement,
+  putMovement,
+  getMovement
 }
 
 export default requests;

@@ -50,32 +50,6 @@ export default function Balance() {
     }, 2000);
   }, [auth.token, deltedMovement]);
 
-  const movementsReader = movements?.map((movement) => {
-    return(
-      <Fragment key={movement._id}>
-        <Movement>
-          <div>
-            <MovementDate>{movement.date}</MovementDate>
-            <MovementDescription>{movement.description}</MovementDescription>
-          </div>
-          <div>
-            <MovementValue isInput={movement.isInput}>{movement.value}</MovementValue>
-            <MovementDelete onClick={() => handleDelete(movement._id)}>X</MovementDelete>
-          </div>
-        </Movement>
-      </Fragment>
-    );
-  })
-
-  const balanceReader = movements?.map(movement => movement.isInput ? parseInt(movement.value.replace(',', '')) : -1 * parseInt(movement.value.replace(',', '')));
-  const balanceResult = balanceReader?.reduce((partialSum, a) => partialSum + a, 0);
-
-  const balanceInputReader = movements?.map(movement => movement.isInput === true && parseInt(movement.value.replace(',', '')));
-  const balanceOutputReader = movements?.map(movement => movement.isInput === false && -1 * parseInt(movement.value.replace(',', '')));
-  const balanceInputResult = balanceInputReader?.reduce((partialSum, a) => partialSum + a, 0);
-  const balanceOutputResult = balanceOutputReader?.reduce((partialSum, a) => partialSum + a, 0);
-  const balanceWalletResult = balanceInputResult > -1 * balanceOutputResult;
-
   function handleCurrency(value) {
     let inputValue = value;
     
@@ -100,10 +74,10 @@ export default function Balance() {
     }
   }
 
-  function handleDelete(idMovement) {
+  function handleDelete(idMovement, token) {
     if(window.confirm("Deseja realmente deletar esta movimentação?")){
       setIsloading(true);
-      const promise = requests.deleteMovement(idMovement);
+      const promise = requests.deleteMovement(idMovement, token);
       setTimeout(() => {
         promise.then(() => {
           setIsloading(false);
@@ -121,6 +95,44 @@ export default function Balance() {
       return;
     }
   }
+
+  function handleUpdate(idMovement) {
+    navigate(`/update/${idMovement}`);
+  }
+
+  const movementsReader = movements?.map((movement) => {
+    return(
+      <Fragment key={movement._id}>
+        <Movement>
+          <div>
+            <MovementDate>{movement.date}</MovementDate>
+            <MovementDescription onClick={() => handleUpdate(movement._id)}>
+              {movement.description}
+            </MovementDescription>
+          </div>
+          <div>
+            <MovementValue isInput={movement.isInput}>
+              {movement.value}
+            </MovementValue>
+            <MovementDelete onClick={() => handleDelete(movement._id, auth.token)}>
+              X
+            </MovementDelete>
+          </div>
+        </Movement>
+      </Fragment>
+    );
+  })
+
+  const balanceReader = movements?.map(movement => movement.isInput ? parseInt(movement.value.replace(',', '')) : -1 * parseInt(movement.value.replace(',', '')));
+  const balanceResult = balanceReader?.reduce((partialSum, a) => partialSum + a, 0);
+
+  const balanceInputReader = movements?.map(movement => movement.isInput === true && parseInt(movement.value.replace(',', '')));
+  const balanceOutputReader = movements?.map(movement => movement.isInput === false && -1 * parseInt(movement.value.replace(',', '')));
+  
+  const balanceInputResult = balanceInputReader?.reduce((partialSum, a) => partialSum + a, 0);
+  const balanceOutputResult = balanceOutputReader?.reduce((partialSum, a) => partialSum + a, 0);
+  
+  const balanceWalletResult = balanceInputResult > -1 * balanceOutputResult;
 
   return(
     <Fragment>
