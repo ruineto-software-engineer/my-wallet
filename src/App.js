@@ -10,9 +10,9 @@ export default function App() {
           <Route path="/" element={<Login />} />
           <Route path="/register" element={<Register />} />
           <Route path="/balance" element={<Balance />} />
-          <Route path="/input" element={<Input />} />          
-          <Route path="/output" element={<Output />} />          
-          <Route path="/update/:idMovement" element={<Update />} />          
+          <Route path="/input" element={<Input />} />        
+          <Route path="/output" element={<Output />} />
+          <Route path="/update/:idMovement" element={<Update />} />    
         </Routes>
       </BrowserRouter>
     </AuthProvider>

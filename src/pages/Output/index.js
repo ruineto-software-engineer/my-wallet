@@ -37,7 +37,7 @@ export default function Output() {
     }
 
     setIsloading(true);
-    const promise = requests.postOutput(outputData, auth.token);
+    const promise = requests.postMovement(outputData, auth.token);
     setTimeout(() => {
       promise.then(() => {
         setIsloading(false);

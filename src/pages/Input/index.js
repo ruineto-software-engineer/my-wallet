@@ -37,7 +37,7 @@ export default function Input() {
     }
 
     setIsloading(true);
-    const promise = requests.postInput(inputData, auth.token);
+    const promise = requests.postMovement(inputData, auth.token);
     setTimeout(() => {
       promise.then(() => {
         setIsloading(false);

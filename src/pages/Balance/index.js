@@ -33,7 +33,7 @@ export default function Balance() {
 
   useEffect(() =>{
     setIsloading(true);
-    const promise = requests.getBalance(auth.token);
+    const promise = requests.getMovements(auth.token);
     setTimeout(() => {
       promise.then((response) => {
         setIsloading(false);
