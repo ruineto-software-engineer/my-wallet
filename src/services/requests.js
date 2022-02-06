@@ -48,7 +48,7 @@ function deleteMovement(idMovement, token) {
 
 function putMovement(body, idMovement, token) {
   const config = createConfig(token);
-  const promise = axios.put(`${BASE_URL}/balance/${idMovement}`, body, config);
+  const promise = axios.put(`${BASE_URL}/update/${idMovement}`, body, config);
 
   return promise;
 }
