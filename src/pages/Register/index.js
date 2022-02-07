@@ -2,7 +2,7 @@ import { Fragment, useState } from "react";
 import { useNavigate } from 'react-router-dom';
 import requests from "../../services/requests";
 import Logo from "../../assets/img/logo.svg";
-import { Button, Container, Form, Input, Hyperlink } from "../../components/Form";
+import { Button, Container, Content, Form, Input, Hyperlink } from "../../components/Form";
 import "react-loader-spinner/dist/loader/css/react-spinner-loader.css";
 import { ThreeDots } from  'react-loader-spinner';
 
@@ -51,54 +51,56 @@ export default function Login() {
   return(
     <Fragment>
       <Container>
-        <img alt="logo.svg" src={Logo}/>
+        <Content>
+          <img alt="logo.svg" src={Logo}/>
 
-        <Form onSubmit={handleSubmit}>
-          <Input 
-            type="text"
-            placeholder="Nome"
-            onChange={(e) => setName(e.target.value)}
-            value={name}
-            stageloading={isLoading}
-            required
-          />
-          <Input
-            type="email"
-            placeholder="E-mail"
-            onChange={(e) => setEmail(e.target.value)}
-            value={email}
-            stageloading={isLoading}
-            required
-          />
-          <Input
-            type="password"
-            placeholder="Senha"
-            onChange={(e) => setPassword(e.target.value)}
-            value={password}
-            stageloading={isLoading}
-            required
-          />
-          <Input
-            type="password"
-            placeholder="Confirme a senha"
-            onChange={(e) => setConfirmPassword(e.target.value)}
-            value={confirmPassword}
-            stageloading={isLoading}
-            required
-          />
+          <Form onSubmit={handleSubmit}>
+            <Input 
+              type="text"
+              placeholder="Nome"
+              onChange={(e) => setName(e.target.value)}
+              value={name}
+              stageloading={isLoading}
+              required
+            />
+            <Input
+              type="email"
+              placeholder="E-mail"
+              onChange={(e) => setEmail(e.target.value)}
+              value={email}
+              stageloading={isLoading}
+              required
+            />
+            <Input
+              type="password"
+              placeholder="Senha"
+              onChange={(e) => setPassword(e.target.value)}
+              value={password}
+              stageloading={isLoading}
+              required
+            />
+            <Input
+              type="password"
+              placeholder="Confirme a senha"
+              onChange={(e) => setConfirmPassword(e.target.value)}
+              value={confirmPassword}
+              stageloading={isLoading}
+              required
+            />
 
-          <Button type="submit" stageloading={isLoading}>
-            {isLoading ?
-              <ThreeDots color="#FFFFFF" height={50} width={50} />
-            :
-              "Cadastrar"
-            }
-          </Button>
-        </Form>
+            <Button type="submit" stageloading={isLoading}>
+              {isLoading ?
+                <ThreeDots color="#FFFFFF" height={50} width={50} />
+              :
+                "Cadastrar"
+              }
+            </Button>
+          </Form>
 
-        <Hyperlink to="/" stageloading={isLoading ? 1 : undefined}>
-          Já tem uma conta? Entre agora!
-        </Hyperlink>
+          <Hyperlink to="/" stageloading={isLoading ? 1 : undefined}>
+            Já tem uma conta? Entre agora!
+          </Hyperlink>
+        </Content>
       </Container>
     </Fragment>
   );

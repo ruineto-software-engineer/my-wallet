@@ -1,7 +1,7 @@
 import styled from "styled-components";
 
 const Header = styled.div`
-  width: 326px;
+  width: 100%;
 
   text-align: left;
 `;

@@ -2,7 +2,7 @@ import styled from "styled-components";
 import { Link } from "react-router-dom";
 
 const Hyperlink = styled(Link)`
-  width: 155px;
+  width: 47.5%;
   height: 114px;
 
   display: flex;

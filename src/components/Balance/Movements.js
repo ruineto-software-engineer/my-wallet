@@ -1,7 +1,7 @@
 import styled from "styled-components";
 
 const Movements = styled.div`
-  width: 326px;
+  width: 100%;
   height: 446px;
   
   display: ${(props) => props.stageisLoading === true ? "flex" 
@@ -35,14 +35,23 @@ const Movements = styled.div`
 
   footer{
     position: absolute;
-    bottom: 10px;
-    left: 10px;
+    bottom: 0;
+    left: 0;
 
     display: flex;
     align-items: center;
-    justify-content: space-between;
+    justify-content: center;
 
-    width: 306px;
+    height: 40px;
+    width: 100%;
+
+    div{
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+
+      width: 94%;
+    }
   }
 `;
 

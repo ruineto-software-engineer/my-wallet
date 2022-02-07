@@ -6,7 +6,7 @@ const Content = styled.div`
   align-items: center;
   justify-content: center;
 
-  width: 90%;
+  width: 85%;
 `;
 
 export default Content;

@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import useAuth from "../../hooks/useAuth";
 import requests from "../../services/requests";
 import Logo from "../../assets/img/logo.svg";
-import { Button, Container, Form, Input, Hyperlink } from "../../components/Form";
+import { Button, Container, Content, Form, Input, Hyperlink } from "../../components/Form";
 import "react-loader-spinner/dist/loader/css/react-spinner-loader.css";
 import { ThreeDots } from  'react-loader-spinner';
 
@@ -48,38 +48,40 @@ export default function Login() {
   return(
     <Fragment>
       <Container>
-        <img alt="logo.svg" src={Logo}/>
+        <Content>
+          <img alt="logo.svg" src={Logo}/>
 
-        <Form onSubmit={handleSubmit}>
-          <Input 
-            type="email"
-            placeholder="E-mail"
-            onChange={(e) => setEmail(e.target.value)}
-            value={email}
-            stageloading={isLoading}
-            required
-          />
-          <Input
-            type="password"
-            placeholder="Senha"
-            onChange={(e) => setPassword(e.target.value)}
-            value={password}
-            stageloading={isLoading}
-            required
-          />
+          <Form onSubmit={handleSubmit}>
+            <Input 
+              type="email"
+              placeholder="E-mail"
+              onChange={(e) => setEmail(e.target.value)}
+              value={email}
+              stageloading={isLoading}
+              required
+            />
+            <Input
+              type="password"
+              placeholder="Senha"
+              onChange={(e) => setPassword(e.target.value)}
+              value={password}
+              stageloading={isLoading}
+              required
+            />
 
-          <Button type="submit" stageloading={isLoading}>
-            {isLoading ?
-              <ThreeDots color="#FFFFFF" height={50} width={50} />
-            :
-              "Entrar"
-            }
-          </Button>
-        </Form>
+            <Button type="submit" stageloading={isLoading}>
+              {isLoading ?
+                <ThreeDots color="#FFFFFF" height={50} width={50} />
+              :
+                "Entrar"
+              }
+            </Button>
+          </Form>
 
-        <Hyperlink to="/register" stageloading={isLoading ? 1 : undefined}>
-          Primeira vez? Cadastre-se!
-        </Hyperlink>
+          <Hyperlink to="/register" stageloading={isLoading ? 1 : undefined}>
+            Primeira vez? Cadastre-se!
+          </Hyperlink>
+        </Content>
       </Container>
     </Fragment>
   );

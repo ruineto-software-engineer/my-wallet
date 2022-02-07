@@ -1,7 +1,7 @@
 import styled from "styled-components";
 
 const Input = styled.input`
-  width: 326px;
+  width: 100%;
   height: 58px;
 
   margin-bottom: 13px;
@@ -15,6 +15,7 @@ const Input = styled.input`
   border: none;
   border-radius: 5px;
 
+  font-family: 'Raleway', sans-serif;
   font-size: 20px;
   line-height: 23px;
 

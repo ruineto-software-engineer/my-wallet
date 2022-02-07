@@ -6,7 +6,7 @@ const Form = styled.form`
   align-items: center;
   justify-content: center;
 
-  width: 90%;
+  width: 100%;
 `;
 
 export default Form;

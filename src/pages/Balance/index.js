@@ -169,10 +169,12 @@ export default function Balance() {
                 movements.length !== 0 &&
                   isLoading === false &&
                     <footer>
-                      <TitleBalance>SALDO</TitleBalance>
-                      <ValueBalance balanceWalletResult={balanceWalletResult}>
-                        {handleCurrency(balanceResult?.toString())}
-                      </ValueBalance>
+                      <div>
+                        <TitleBalance>SALDO</TitleBalance>
+                        <ValueBalance balanceWalletResult={balanceWalletResult}>
+                          {handleCurrency(balanceResult?.toString())}
+                        </ValueBalance>
+                      </div>
                     </footer>
             }
           </Movements>
