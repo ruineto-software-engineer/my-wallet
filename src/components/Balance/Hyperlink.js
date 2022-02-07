@@ -32,6 +32,10 @@ const Hyperlink = styled(Link)`
     top: 10px;
     left: 10px;
   }
+
+  @media screen and (min-width: 800px) {
+    width: 49%;
+  }
 `;
 
 export default Hyperlink;

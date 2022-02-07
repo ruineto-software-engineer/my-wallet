@@ -51,6 +51,10 @@ const Movements = styled.div`
       justify-content: space-between;
 
       width: 94%;
+
+      @media screen and (min-width: 800px) {
+        width: 98%;
+      }
     }
   }
 `;

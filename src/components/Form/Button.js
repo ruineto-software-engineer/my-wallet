@@ -22,6 +22,8 @@ const Button = styled.button`
   line-height: 23px;
 
   color: #FFFFFF;
+
+  cursor: pointer;
 `;
 
 export default Button;

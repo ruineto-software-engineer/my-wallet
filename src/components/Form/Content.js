@@ -7,6 +7,10 @@ const Content = styled.div`
   justify-content: center;
 
   width: 85%;
+
+  @media screen and (min-width: 800px) {
+    width: 326px;
+  }
 `;
 
 export default Content;

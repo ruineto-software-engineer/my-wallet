@@ -13,6 +13,8 @@ const Header = styled.div`
   button{
     border: none;
     background-color: transparent;
+
+    cursor: pointer;
   }
 `;
 

@@ -7,6 +7,8 @@ const MovementDescription = styled.span`
   margin-left: 5px;
 
   color: #000000;
+
+  cursor: pointer;
 `;
 
 export default MovementDescription;
