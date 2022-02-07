@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const BASE_URL = 'http://localhost:5000';
+const BASE_URL = 'https://api-my-wallet-ruineto-dev.herokuapp.com';
 
 function createConfig(token) {
   return { headers: { Authorization: `Bearer ${token}` } };
