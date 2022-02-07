@@ -5,6 +5,7 @@ import requests from "../../services/requests";
 import dayjs from 'dayjs';
 import { Container, Content, Title, Header } from "../../components/Movements";
 import { Button, Form, Input as InputForm } from "../../components/Form";
+import Swal from 'sweetalert2';
 import "react-loader-spinner/dist/loader/css/react-spinner-loader.css";
 import { ThreeDots } from  'react-loader-spinner';
 
@@ -16,6 +17,17 @@ export default function Update() {
   const [value, setValue] = useState('');
   const [description, setDescription] = useState('');
   const [isLoading, setIsloading] = useState(false);
+  const Toast = Swal.mixin({
+    toast: true,
+    position: 'top-end',
+    showConfirmButton: false,
+    timer: 3000,
+    timerProgressBar: true,
+    didOpen: (toast) => {
+      toast.addEventListener('mouseenter', Swal.stopTimer)
+      toast.addEventListener('mouseleave', Swal.resumeTimer)
+    }
+  })
 
   useEffect(() => {
     const promise = requests.getMovement(idMovement, auth.token);
@@ -24,6 +36,13 @@ export default function Update() {
       setValue(response.data.value);
       setDescription(response.data.description);
     });
+    promise.catch(() => {
+      Swal.fire({
+        icon: 'error',
+        title: 'Oops...',
+        text: 'Não foi possível buscar a movimentação. Ocorreu um erro inesperado, tente novamente!'
+      })
+    })
   }, [idMovement, auth.token]);
 
   function handleSubmit(e) {
@@ -53,6 +72,17 @@ export default function Update() {
       promise.then(() => {
         setIsloading(false);
         
+        if(formData.isInput){
+          Toast.fire({
+            icon: 'success',
+            title: 'Entrada atualizada com sucesso!'
+          })
+        }else{
+          Toast.fire({
+            icon: 'success',
+            title: 'Saída atualizada com sucesso!'
+          })
+        }
         navigate("/balance");
       });
     }, 2000);
@@ -60,7 +90,10 @@ export default function Update() {
       promise.catch(() => {
         setIsloading(false);
 
-        alert(`Não foi possível atualizar os dados da movimentação. Ocorreu um erro inesperado, tente novamente mais tarde!`);
+        Toast.fire({
+          icon: 'error',
+          text: 'Não foi possível atualizar os dados da movimentação. Ocorreu um erro inesperado, tente novamente mais tarde!'
+        })
       });
     }, 2000);
   }

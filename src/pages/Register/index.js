@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import requests from "../../services/requests";
 import Logo from "../../assets/img/logo.svg";
 import { Button, Container, Content, Form, Input, Hyperlink } from "../../components/Form";
+import Swal from 'sweetalert2';
 import "react-loader-spinner/dist/loader/css/react-spinner-loader.css";
 import { ThreeDots } from  'react-loader-spinner';
 
@@ -13,12 +14,26 @@ export default function Login() {
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [isLoading, setIsloading] = useState(false);
+  const Toast = Swal.mixin({
+    toast: true,
+    position: 'top-end',
+    showConfirmButton: false,
+    timer: 3000,
+    timerProgressBar: true,
+    didOpen: (toast) => {
+      toast.addEventListener('mouseenter', Swal.stopTimer)
+      toast.addEventListener('mouseleave', Swal.resumeTimer)
+    }
+  })
 
   function handleSubmit(e) {
     e.preventDefault();
 
     if(password !== confirmPassword){
-      alert("As senhas não são compatíveis, reveja os campos de senha!");
+      Toast.fire({
+        icon: 'error',
+        text: 'As senhas não são compatíveis, reveja os campos de senha!',
+      })
       return;
     }
 
@@ -31,7 +46,11 @@ export default function Login() {
     setTimeout(() => {
       promise.then(() => {
         setIsloading(false);
-        
+
+        Toast.fire({
+          icon: 'success',
+          title: 'Cadastro realizado com sucesso'
+        })
         navigate("/");
       });
     }, 3000);
@@ -40,9 +59,15 @@ export default function Login() {
         setIsloading(false);
 
         if(error.response.status === 409){
-          alert(`Não foi possível efetuar o cadastro. Nome ou e-mail já em uso, tente novamente!`);
+          Toast.fire({
+            icon: 'error',
+            text: 'Não foi possível efetuar o cadastro. Nome ou e-mail já em uso, tente novamente!'
+          })
         }else{
-          alert(`Não foi possível efetuar o cadastro. Ocorreu algum erro inesperado, tente novamente mais tarde!`);
+          Toast.fire({
+            icon: 'error',
+            text: 'Não foi possível efetuar o cadastro. Ocorreu algum erro inesperado, tente novamente mais tarde!'
+          })
         }
       });
     }, 3000);

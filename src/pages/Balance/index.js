@@ -5,6 +5,7 @@ import requests from "../../services/requests";
 import Logout from "../../assets/img/logout.svg";
 import PlusCircle from "../../assets/img/plus-circle.svg";
 import MinusCircle from "../../assets/img/minus-circle.svg";
+import Swal from 'sweetalert2';
 import "react-loader-spinner/dist/loader/css/react-spinner-loader.css";
 import { TailSpin } from  'react-loader-spinner';
 import { 
@@ -30,6 +31,17 @@ export default function Balance() {
   const [movements, setMovements] = useState(null);
   const [isLoading, setIsloading] = useState(false);
   const [deltedMovement, setDeletedMovement] = useState(null);
+  const Toast = Swal.mixin({
+    toast: true,
+    position: 'top-end',
+    showConfirmButton: false,
+    timer: 3000,
+    timerProgressBar: true,
+    didOpen: (toast) => {
+      toast.addEventListener('mouseenter', Swal.stopTimer)
+      toast.addEventListener('mouseleave', Swal.resumeTimer)
+    }
+  })
 
   useEffect(() =>{
     setIsloading(true);
@@ -45,7 +57,11 @@ export default function Balance() {
       promise.catch(() => {
         setIsloading(false);
 
-        alert("Não foi possível buscar as movimentações. Ocorreu um erro inesperado, tente novamente!");
+        Swal.fire({
+          icon: 'error',
+          title: 'Oops...',
+          text: 'Não foi possível buscar as movimentações. Ocorreu um erro inesperado, tente novamente!'
+        })
       });
     }, 2000);
   }, [auth.token, deltedMovement]);
@@ -66,34 +82,67 @@ export default function Balance() {
   }
 
   function handleLogout() {
-    if(window.confirm("Deseja realmente sair da seção atual?")){
-      logout();
-      navigate("/");
-    }else{
-      return;
-    }
+    Swal.fire({
+      title: 'Deseja realmente sair da seção atual?',
+      text: "Você não será capaz de reverter isso!",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Sim',
+      cancelButtonText: 'Cancelar'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        logout();
+        navigate("/");
+
+        Swal.fire(
+          'Seção encerrada!',
+          'Sua foi encerrada com sucesso.',
+          'success'
+        )
+      }
+    })
   }
 
   function handleDelete(idMovement, token) {
-    if(window.confirm("Deseja realmente deletar esta movimentação?")){
-      setIsloading(true);
-      const promise = requests.deleteMovement(idMovement, token);
-      setTimeout(() => {
-        promise.then(() => {
-          setIsloading(false);
-          setDeletedMovement(idMovement);
-        });
-      }, 3000);
-      setTimeout(() => {
-        promise.catch(() => {
-          setIsloading(false);
-  
-          alert(`Não foi possível deletar a movimentação. Ocorreu um erro inesperado, tente novamente mais tarde!`);
-        });
-      }, 3000);
-    }else{
-      return;
-    }
+    Swal.fire({
+      title: 'Deseja realmente deletar esta movimentação?',
+      text: "Você não será capaz de reverter isso!",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Sim, exclua!',
+      cancelButtonText: 'Cancelar'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        setIsloading(true);
+        const promise = requests.deleteMovement(idMovement, token);
+        setTimeout(() => {
+          promise.then(() => {
+            setIsloading(false);
+            setDeletedMovement(idMovement);
+          });
+        }, 3000);
+        setTimeout(() => {
+          promise.catch(() => {
+            setIsloading(false);
+    
+            Toast.fire({
+              icon: 'error',
+              text: 'Não foi possível deletar a movimentação. Ocorreu um erro inesperado, tente novamente mais tarde!'
+            })
+          });
+        }, 3000);
+
+        Swal.fire(
+          'Excluída!',
+          'Sua movimentação foi excluída.',
+          'success'
+        )
+      }
+    })
   }
 
   function handleUpdate(idMovement) {

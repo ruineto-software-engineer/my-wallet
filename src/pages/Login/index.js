@@ -4,6 +4,7 @@ import useAuth from "../../hooks/useAuth";
 import requests from "../../services/requests";
 import Logo from "../../assets/img/logo.svg";
 import { Button, Container, Content, Form, Input, Hyperlink } from "../../components/Form";
+import Swal from 'sweetalert2';
 import "react-loader-spinner/dist/loader/css/react-spinner-loader.css";
 import { ThreeDots } from  'react-loader-spinner';
 
@@ -13,6 +14,17 @@ export default function Login() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [isLoading, setIsloading] = useState(false);
+  const Toast = Swal.mixin({
+    toast: true,
+    position: 'top-end',
+    showConfirmButton: false,
+    timer: 3000,
+    timerProgressBar: true,
+    didOpen: (toast) => {
+      toast.addEventListener('mouseenter', Swal.stopTimer)
+      toast.addEventListener('mouseleave', Swal.resumeTimer)
+    }
+  })
 
   useEffect(() => {
     if (localStorage.getItem("auth") !== null) {
@@ -33,6 +45,11 @@ export default function Login() {
         setIsloading(false);
 
         login(response.data);
+
+        Toast.fire({
+          icon: 'success',
+          title: 'Login realizado com sucesso'
+        })
         navigate("/balance");
       });
     }, 3000);
@@ -40,7 +57,10 @@ export default function Login() {
       promise.catch(() => {
         setIsloading(false);
 
-        alert(`Não foi possível efetuar o login. Ocorreu um erro inesperado, tente novamente mais tarde!`);
+        Toast.fire({
+          icon: 'error',
+          text: 'Não foi possível efetuar o login. Ocorreu um erro inesperado, tente novamente mais tarde!'
+        })
       });
     }, 3000);
   }

@@ -5,6 +5,7 @@ import requests from "../../services/requests";
 import dayjs from 'dayjs';
 import { Container, Content, Title, Header } from "../../components/Movements";
 import { Button, Form, Input as InputForm } from "../../components/Form";
+import Swal from 'sweetalert2';
 import "react-loader-spinner/dist/loader/css/react-spinner-loader.css";
 import { ThreeDots } from  'react-loader-spinner';
 
@@ -14,6 +15,17 @@ export default function Output() {
   const [value, setValue] = useState('');
   const [description, setDescription] = useState('');
   const [isLoading, setIsloading] = useState(false);
+  const Toast = Swal.mixin({
+    toast: true,
+    position: 'top-end',
+    showConfirmButton: false,
+    timer: 3000,
+    timerProgressBar: true,
+    didOpen: (toast) => {
+      toast.addEventListener('mouseenter', Swal.stopTimer)
+      toast.addEventListener('mouseleave', Swal.resumeTimer)
+    }
+  })
 
   function handleSubmit(e) {
     e.preventDefault();
@@ -42,6 +54,10 @@ export default function Output() {
       promise.then(() => {
         setIsloading(false);
         
+        Toast.fire({
+          icon: 'success',
+          title: 'Saída cadastrada com sucesso!'
+        }) 
         navigate("/balance");
       });
     }, 2000);
@@ -49,7 +65,10 @@ export default function Output() {
       promise.catch(() => {
         setIsloading(false);
 
-        alert(`Não foi possível efetuar o cadastro da entrada. Ocorreu um erro inesperado, tente novamente mais tarde!`);
+        Toast.fire({
+          icon: 'error',
+          text: 'Não foi possível efetuar o cadastro da saída. Ocorreu um erro inesperado, tente novamente mais tarde!'
+        })
       });
     }, 2000);
   }
