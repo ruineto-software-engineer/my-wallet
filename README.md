@@ -4,7 +4,7 @@ An easy to use financial manager. Track your revenues and expenses to learn how 
 
 <!-- <img src="/assets/my-wallet-usage.gif" /> -->
 
-Try it out now at https://music-now.vercel.app/
+Try it out now at https://my-wallet-ruineto-dev.vercel.app
 
 ## About
 
